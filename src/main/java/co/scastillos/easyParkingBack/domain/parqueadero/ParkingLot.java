@@ -1,4 +1,4 @@
-package co.scastillos.easyParkingBack.entity;
+package co.scastillos.easyParkingBack.domain.parqueadero;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,16 +12,14 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "parqueaderos")
 @Builder
-public class Parqueadero {
+public class ParkingLot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-
-    private String direccion;
-
-    private String capacidad;
+    private String name;        // Nombre
+    private String address;     // Dirección
+    private String capacity;    // Capacidad
 
 }
