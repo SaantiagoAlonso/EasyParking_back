@@ -1,6 +1,8 @@
 package co.scastillos.easyParkingBack.service;
 
 import co.scastillos.easyParkingBack.domain.usuario.*;
+import co.scastillos.easyParkingBack.domain.vehiculo.Vehicle;
+import co.scastillos.easyParkingBack.domain.vehiculo.VehicleRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
 
     public void createUser(@Valid RegisterUserDto user) {
@@ -70,5 +75,15 @@ public class UserService {
 
         return new UserResponseDto(user);
 
+    }
+
+    public User findUserByLicensePlate(String licensePlate) {
+        Vehicle vehicle = vehicleRepository.findByLicensePlate(licensePlate)
+                .orElseThrow(()-> new RuntimeException("vehiculo no encontrado"));
+        if (vehicle != null) {
+            return vehicle.getUser(); // Retorna el usuario asociado
+        } else {
+            return null; // O lanzar una excepción si prefieres
+        }
     }
 }
