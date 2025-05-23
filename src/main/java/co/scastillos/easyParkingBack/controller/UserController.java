@@ -4,6 +4,7 @@ import co.scastillos.easyParkingBack.domain.usuario.RegisterUserDto;
 import co.scastillos.easyParkingBack.domain.usuario.UpdateUserDto;
 import co.scastillos.easyParkingBack.domain.usuario.UserResponseDto;
 import co.scastillos.easyParkingBack.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> createNewUser(@RequestBody RegisterUserDto user){
+    public ResponseEntity<Void> createNewUser(@Valid @RequestBody RegisterUserDto user){
         userService.createUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto user){
+    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestBody UpdateUserDto user){
         return ResponseEntity.ok(userService.updateUser(user));
     }
 

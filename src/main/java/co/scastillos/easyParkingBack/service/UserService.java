@@ -2,9 +2,12 @@ package co.scastillos.easyParkingBack.service;
 
 import co.scastillos.easyParkingBack.domain.usuario.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -16,7 +19,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
 
-    public void createUser(RegisterUserDto user) {
+    public void createUser(@Valid RegisterUserDto user) {
 
         User newUser = User.builder()
                 .username(user.username())
@@ -37,7 +40,8 @@ public class UserService {
     @Transactional
     public UserResponseDto updateUser(UpdateUserDto userDto) {
 
-        User user = userRepository.findById(userDto.id()).get();
+        User user = userRepository.findById(userDto.id())
+                .orElseThrow(() ->new NoSuchElementException("User with Id " + userDto.id() +  " not found"));
         if(userDto.documentId() != null){
             user.setDocumentId(userDto.documentId());
         }

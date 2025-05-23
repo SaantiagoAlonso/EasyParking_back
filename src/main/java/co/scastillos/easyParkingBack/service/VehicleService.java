@@ -5,8 +5,11 @@ import co.scastillos.easyParkingBack.domain.usuario.UserRepository;
 import co.scastillos.easyParkingBack.domain.vehiculo.Vehicle;
 import co.scastillos.easyParkingBack.domain.vehiculo.VehicleDto;
 import co.scastillos.easyParkingBack.domain.vehiculo.VehicleRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 public class VehicleService {
@@ -17,10 +20,11 @@ public class VehicleService {
     @Autowired
     private UserRepository userRepository;
 
-    public void registerVehicle(VehicleDto vehicle){
+    public void registerVehicle(@Valid VehicleDto vehicle){
 
         //configurar errror en caso de no encontar usuario
-        User user = userRepository.findByDocumentId(vehicle.documentId()).get();
+        User user = userRepository.findByDocumentId(vehicle.documentId())
+                .orElseThrow(() -> new NoSuchElementException("User with Document " + vehicle.documentId() +  " not found"));
 
         Vehicle newVehicle = Vehicle.builder()
                 .licensePlate(vehicle.licensePlate())

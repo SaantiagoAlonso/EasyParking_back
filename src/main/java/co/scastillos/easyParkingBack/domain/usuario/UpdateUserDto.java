@@ -1,11 +1,13 @@
 package co.scastillos.easyParkingBack.domain.usuario;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
+import lombok.NonNull;
 
 @Builder
 public record UpdateUserDto(
 
-        Long id,
+        @NonNull Long id,
         String username,
         String password,
         Integer documentId,
